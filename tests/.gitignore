@@ -1,0 +1,19 @@
+# Test data and fixtures
+# Keep small test files but ignore large video test files
+
+# Ignore large test video files
+*.mp4
+*.avi
+*.mov
+*.mkv
+
+# Keep small test fixtures
+!fixtures/
+!sample_configs/
+!*.json
+!*.yaml
+
+# Ignore test output
+test_output/
+__pycache__/
+.pytest_cache/

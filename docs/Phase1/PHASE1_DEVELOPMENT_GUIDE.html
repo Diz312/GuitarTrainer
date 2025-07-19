@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GuitarTrainer Phase 1 Development Guide</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+            color: #333;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        h1 {
+            text-align: center;
+            color: #2b6cb0;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        h2 {
+            color: #2d3748;
+            border-bottom: 3px solid #4299e1;
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+        .phase-header {
+            background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        .component-card {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .component-card:hover {
+            transform: translateY(-5px);
+        }
+        .component-title {
+            background: linear-gradient(135deg, #38b2ac 0%, #319795 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        .milestone-timeline {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px 0;
+            flex-wrap: wrap;
+            position: relative;
+        }
+        .milestone-timeline::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #4299e1, #3182ce);
+            z-index: 1;
+        }
+        .milestone {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            min-width: 140px;
+            margin: 10px 5px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 2;
+            border: 4px solid white;
+        }
+        .file-structure {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 25px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        .tech-focus {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        .tech-item {
+            background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .workflow-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 25px 0;
+        }
+        .workflow-step {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+        .step-number {
+            background: rgba(255,255,255,0.3);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 20px;
+            font-size: 1.2em;
+        }
+        .deliverable-box {
+            background: linear-gradient(135deg, #9f7aea 0%, #805ad5 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+        .success-criteria {
+            background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+        .code-structure {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+        }
+        .priority-badge {
+            display: inline-block;
+            background: #f56565;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .feature-item {
+            background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Phase 1: Foundation Development</h1>
+        
+        <div class="phase-header">
+            <h2 style="margin: 0; border: none; color: white;">Week 1-2: Building the Core Foundation</h2>
+            <p style="margin: 10px 0 0 0; font-size: 1.1em;">Video Input + Pose Detection + Basic GUI</p>
+        </div>
+
+        <div class="deliverable-box">
+            <h3>🎯 Phase 1 Goal</h3>
+            <p><strong>Build a working application that can:</strong></p>
+            <ul>
+                <li>Load and display video files</li>
+                <li>Detect human pose in guitar playing videos</li>
+                <li>Show pose landmarks overlaid on video</li>
+                <li>Provide a simple desktop interface</li>
+            </ul>
+        </div>
+
+        <h2>🔧 Core Components to Build</h2>
+        <div class="component-grid">
+            <div class="component-card">
+                <div class="component-title">📁 Video Input Module</div>
+                <strong>Purpose:</strong> Handle video file loading and processing<br><br>
+                <strong>Key Features:</strong>
+                <ul>
+                    <li>File browser for video selection</li>
+                    <li>Video format validation</li>
+                    <li>Frame extraction and preprocessing</li>
+                    <li>Basic video information display</li>
+                </ul>
+                <strong>Files:</strong> <code>src/video_input/</code>
+            </div>
+
+            <div class="component-card">
+                <div class="component-title">🤖 Pose Detection Engine</div>
+                <strong>Purpose:</strong> Find body parts in video frames<br><br>
+                <strong>Key Features:</strong>
+                <ul>
+                    <li>MediaPipe integration</li>
+                    <li>Confidence threshold filtering</li>
+                    <li>Landmark coordinate extraction</li>
+                    <li>Error handling for poor detection</li>
+                </ul>
+                <strong>Files:</strong> <code>src/pose_detection/</code>
+            </div>
+
+            <div class="component-card">
+                <div class="component-title">🖥️ Basic GUI Framework</div>
+                <strong>Purpose:</strong> User interface for the application<br><br>
+                <strong>Key Features:</strong>
+                <ul>
+                    <li>Main application window</li>
+                    <li>Video player widget</li>
+                    <li>File selection dialogs</li>
+                    <li>Basic controls and status display</li>
+                </ul>
+                <strong>Files:</strong> <code>src/gui/</code>
+            </div>
+        </div>
+
+        <h2>📅 Development Milestones</h2>
+        <div class="milestone-timeline">
+            <div class="milestone">
+                <strong>Day 1-2</strong><br>
+                Setup & Video Input
+            </div>
+            <div class="milestone">
+                <strong>Day 3-4</strong><br>
+                Pose Detection Core
+            </div>
+            <div class="milestone">
+                <strong>Day 5-7</strong><br>
+                Basic GUI Framework
+            </div>
+            <div class="milestone">
+                <strong>Day 8-10</strong><br>
+                Integration & Testing
+            </div>
+            <div class="milestone">
+                <strong>Day 11-14</strong><br>
+                Polish & Documentation
+            </div>
+        </div>
+
+        <h2>🛠️ Technology Focus for Phase 1</h2>
+        <div class="tech-focus">
+            <div class="tech-item">
+                <strong>OpenCV</strong><br>
+                Video file handling and frame processing
+            </div>
+            <div class="tech-item">
+                <strong>MediaPipe</strong><br>
+                Pre-trained pose detection models
+            </div>
+            <div class="tech-item">
+                <strong>PyQt6</strong><br>
+                Desktop GUI framework
+            </div>
+            <div class="tech-item">
+                <strong>NumPy</strong><br>
+                Array processing for coordinates
+            </div>
+        </div>
+
+        <h2>📋 Development Workflow</h2>
+        <div class="workflow-steps">
+            <div class="workflow-step">
+                <div class="step-number">1</div>
+                <div>
+                    <strong>Setup Environment:</strong> Install dependencies, create basic project structure, test imports
+                </div>
+            </div>
+            <div class="workflow-step">
+                <div class="step-number">2</div>
+                <div>
+                    <strong>Video Input Module:</strong> Build file loading, validation, and basic video processing
+                </div>
+            </div>
+            <div class="workflow-step">
+                <div class="step-number">3</div>
+                <div>
+                    <strong>Pose Detection:</strong> Integrate MediaPipe, process single frames, extract landmarks
+                </div>
+            </div>
+            <div class="workflow-step">
+                <div class="step-number">4</div>
+                <div>
+                    <strong>GUI Foundation:</strong> Create main window, video player, basic controls
+                </div>
+            </div>
+            <div class="workflow-step">
+                <div class="step-number">5</div>
+                <div>
+                    <strong>Integration:</strong> Connect all components, end-to-end video processing
+                </div>
+            </div>
+            <div class="workflow-step">
+                <div class="step-number">6</div>
+                <div>
+                    <strong>Testing & Polish:</strong> Handle edge cases, improve user experience
+                </div>
+            </div>
+        </div>
+
+        <h2>📁 File Structure for Phase 1</h2>
+        <div class="file-structure">
+src/
+├── main.py                     # Application entry point
+├── video_input/
+│   ├── __init__.py
+│   ├── video_loader.py        # File loading and validation
+│   ├── video_processor.py     # Frame extraction and preprocessing
+│   └── video_utils.py         # Helper functions
+├── pose_detection/
+│   ├── __init__.py
+│   ├── mediapipe_detector.py  # MediaPipe pose detection
+│   ├── landmark_extractor.py  # Process pose landmarks
+│   └── detection_utils.py     # Utility functions
+├── gui/
+│   ├── __init__.py
+│   ├── main_window.py         # Primary application window
+│   ├── video_player.py        # Video display widget
+│   ├── controls.py            # UI controls and dialogs
+│   └── gui_utils.py           # UI helper functions
+└── config/
+    ├── __init__.py
+    └── settings.py            # Configuration management
+        </div>
+
+        <h2>🎯 Key Features to Implement</h2>
+        <div class="feature-list">
+            <div class="feature-item">
+                <strong>Video File Loading</strong><br>
+                Support MP4, AVI, MOV formats
+            </div>
+            <div class="feature-item">
+                <strong>Pose Visualization</strong><br>
+                Overlay skeleton on video frames
+            </div>
+            <div class="feature-item">
+                <strong>Frame Navigation</strong><br>
+                Play, pause, seek through video
+            </div>
+            <div class="feature-item">
+                <strong>Landmark Display</strong><br>
+                Show detected body part coordinates
+            </div>
+            <div class="feature-item">
+                <strong>Error Handling</strong><br>
+                Graceful failures for invalid files
+            </div>
+            <div class="feature-item">
+                <strong>Basic Settings</strong><br>
+                Confidence thresholds, display options
+            </div>
+        </div>
+
+        <div class="success-criteria">
+            <h3>✅ Phase 1 Success Criteria</h3>
+            <ul>
+                <li><strong>Load Video:</strong> User can browse and load guitar playing videos</li>
+                <li><strong>Detect Pose:</strong> Application finds body landmarks with >70% confidence</li>
+                <li><strong>Visual Overlay:</strong> Pose skeleton displayed on video frames</li>
+                <li><strong>Basic Controls:</strong> Play, pause, frame-by-frame navigation works</li>
+                <li><strong>Stable Performance:</strong> No crashes with typical video files</li>
+                <li><strong>Educational Code:</strong> Clean, commented code for learning</li>
+            </ul>
+        </div>
+
+        <div class="code-structure">
+            <h3>🧩 Code Architecture Patterns</h3>
+            <strong>Model-View-Controller (MVC):</strong><br>
+            • Model: Video data and pose detection results<br>
+            • View: GUI components and video display<br>
+            • Controller: Main application logic and event handling<br><br>
+            
+            <strong>Observer Pattern:</strong><br>
+            • GUI components listen for processing updates<br>
+            • Status updates propagate through the interface<br><br>
+            
+            <strong>Factory Pattern:</strong><br>
+            • Different video processors for different formats<br>
+            • Configurable pose detection backends
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; padding: 25px; background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%); color: white; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.2);">
+            <h3>🏁 Ready to Start Development!</h3>
+            <p><strong>Phase 1 Duration:</strong> 2 weeks (14 days)</p>
+            <p><strong>End Goal:</strong> Working foundation that loads videos and shows pose detection</p>
+            <p><strong>Next Step:</strong> Generate comprehensive developer instructions</p>
+        </div>
+    </div>
+</body>
+</html>

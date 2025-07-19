@@ -1,0 +1,4 @@
+# Temporary files directory
+# Used for intermediate processing files during video analysis
+*
+!.gitkeep

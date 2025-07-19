@@ -1,0 +1,4 @@
+# Cache directory for computed features and intermediate results
+# Improves performance by caching expensive computations
+*
+!.gitkeep

@@ -1,0 +1,11 @@
+# Training videos directory
+# This directory stores labeled video examples for model training
+# 
+# Structure:
+# training_videos/
+# ├── good_examples/
+# └── needs_improvement/
+#
+# Note: Actual video files are gitignored due to size
+*
+!.gitkeep

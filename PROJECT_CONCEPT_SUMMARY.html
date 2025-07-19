@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GuitarTrainer Concept Guide</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        h1 {
+            text-align: center;
+            color: #4a5568;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        h2 {
+            color: #2d3748;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+        .concept-box {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .flow-diagram {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        .flow-step {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            min-width: 150px;
+            margin: 10px 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        .flow-step::after {
+            content: '→';
+            position: absolute;
+            right: -25px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 24px;
+            color: #667eea;
+            font-weight: bold;
+        }
+        .flow-step:last-child::after {
+            display: none;
+        }
+        .body-parts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .body-part {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .learning-cycle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 30px 0;
+            position: relative;
+        }
+        .cycle-step {
+            background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin: 0 20px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        .cycle-arrow {
+            position: absolute;
+            font-size: 30px;
+            color: #ed8936;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .tech-item {
+            background: linear-gradient(135deg, #3182ce 0%, #2c5282 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        }
+        .example-box {
+            background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .good-bad {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .good {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .bad {
+            background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .phase-timeline {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        .phase {
+            background: linear-gradient(135deg, #805ad5 0%, #6b46c1 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 120px;
+            margin: 5px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎸 GuitarTrainer - What We're Building</h1>
+        
+        <div class="concept-box">
+            <h2>🎯 The Big Picture</h2>
+            <p><strong>Simple Explanation:</strong> We're building a "smart coach" that watches you play guitar and tells you how to improve your posture and hand position - just like having a guitar teacher, but using computer vision!</p>
+            
+            <p><strong>Think of it like:</strong> A fitness app that analyzes your workout form, but for guitar playing technique.</p>
+        </div>
+
+        <h2>📹 How It Works - Step by Step</h2>
+        <div class="flow-diagram">
+            <div class="flow-step">
+                <strong>1. Upload Video</strong><br>
+                You record yourself playing guitar
+            </div>
+            <div class="flow-step">
+                <strong>2. AI Analyzes</strong><br>
+                Computer finds your body parts
+            </div>
+            <div class="flow-step">
+                <strong>3. Measures Technique</strong><br>
+                Checks if posture is good/bad
+            </div>
+            <div class="flow-step">
+                <strong>4. Gives Feedback</strong><br>
+                "Relax your wrist" etc.
+            </div>
+        </div>
+
+        <h2>👁️ What the AI "Sees" - Body Parts We Track</h2>
+        <div class="body-parts">
+            <div class="body-part">
+                <strong>🏒 Shoulders</strong><br>
+                Are they level? Slouching?
+            </div>
+            <div class="body-part">
+                <strong>🤲 Right Wrist</strong><br>
+                Bent too much? Too straight?
+            </div>
+            <div class="body-part">
+                <strong>✋ Right Hand</strong><br>
+                Smooth picking motion?
+            </div>
+            <div class="body-part">
+                <strong>🖐️ Left Fingers</strong><br>
+                Proper finger curves?
+            </div>
+        </div>
+
+        <h2>🧠 The Learning Process</h2>
+        <div class="learning-cycle">
+            <div class="cycle-step">
+                Show "Good" Examples
+            </div>
+            <div class="cycle-arrow">→</div>
+            <div class="cycle-step">
+                AI Learns Patterns
+            </div>
+            <div class="cycle-arrow">→</div>
+            <div class="cycle-step">
+                Analyze Your Videos
+            </div>
+            <div class="cycle-arrow">→</div>
+            <div class="cycle-step">
+                Give Feedback
+            </div>
+        </div>
+
+        <div class="concept-box">
+            <h3>🔄 Continuous Improvement</h3>
+            <p>The more you use it, the smarter it gets! You can upload new examples of good/bad technique, and the AI automatically retrains itself to give better feedback.</p>
+        </div>
+
+        <h2>🛠️ Technology Stack (What Tools We Use)</h2>
+        <div class="tech-stack">
+            <div class="tech-item">Python<br><small>Main programming language</small></div>
+            <div class="tech-item">MediaPipe<br><small>Finds body parts in video</small></div>
+            <div class="tech-item">OpenCV<br><small>Handles video processing</small></div>
+            <div class="tech-item">PyQt6<br><small>Desktop app interface</small></div>
+            <div class="tech-item">scikit-learn<br><small>Machine learning brain</small></div>
+        </div>
+
+        <h2>📊 What Good vs Bad Technique Looks Like</h2>
+        <div class="good-bad">
+            <div class="good">
+                <h3>✅ Good Technique</h3>
+                <ul>
+                    <li>Shoulders level (±5°)</li>
+                    <li>Wrist slightly bent (10-20°)</li>
+                    <li>Smooth hand movement</li>
+                    <li>Curved fingers on frets</li>
+                </ul>
+            </div>
+            <div class="bad">
+                <h3>❌ Needs Improvement</h3>
+                <ul>
+                    <li>Hunched shoulders</li>
+                    <li>Wrist too bent/straight</li>
+                    <li>Jerky, tense movements</li>
+                    <li>Flat fingers, poor placement</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="example-box">
+            <h3>🎬 Real Example</h3>
+            <p><strong>You upload a 30-second video of yourself playing.</strong></p>
+            <p><strong>App says:</strong> "Your shoulder alignment: 85/100 ✅ | Your right wrist: 60/100 ⚠️ | Suggestion: Try relaxing your wrist angle by 10 degrees"</p>
+        </div>
+
+        <h2>🗓️ Development Timeline</h2>
+        <div class="phase-timeline">
+            <div class="phase">
+                <strong>Phase 1</strong><br>
+                Basic video + pose detection
+            </div>
+            <div class="phase">
+                <strong>Phase 2</strong><br>
+                Simple analysis + feedback
+            </div>
+            <div class="phase">
+                <strong>Phase 3</strong><br>
+                Training tools
+            </div>
+            <div class="phase">
+                <strong>Phase 4</strong><br>
+                Smart learning
+            </div>
+            <div class="phase">
+                <strong>Phase 5</strong><br>
+                Advanced features
+            </div>
+        </div>
+
+        <div class="concept-box">
+            <h2>🎓 Educational Value</h2>
+            <p>This project teaches you:</p>
+            <ul>
+                <li><strong>Computer Vision:</strong> How AI "sees" and understands images</li>
+                <li><strong>Machine Learning:</strong> How computers learn from examples</li>
+                <li><strong>Desktop Applications:</strong> Building user-friendly software</li>
+                <li><strong>Data Processing:</strong> Working with video and numerical data</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 10px;">
+            <h3>🚀 Ready to Build?</h3>
+            <p>Once you confirm understanding, we'll generate the first developer instructions to start Phase 1!</p>
+        </div>
+    </div>
+</body>
+</html>

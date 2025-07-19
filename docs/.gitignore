@@ -1,0 +1,12 @@
+# Documentation build files and temporary files
+
+# Sphinx documentation
+_build/
+_static/
+_templates/
+
+# Keep source documentation files
+!*.md
+!*.rst
+!.gitkeep
+!.html
