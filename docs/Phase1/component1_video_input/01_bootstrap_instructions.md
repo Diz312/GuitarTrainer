@@ -460,3 +460,41 @@ class TestVideoLoader(unittest.TestCase):
 - [ ] Plan for future phase requirements
 
 **This bootstrap document provides complete foundation knowledge for developing Phase 1 components with professional quality and educational clarity.**
+
+---
+
+## SESSION TRACKING REQUIREMENTS
+
+### **Developer Agent Context Evolution**
+**Create/Update**: `developer_session_log.md` in this component folder
+**Purpose**: Capture development insights for architect context evolution
+
+### **Document Everything**
+**Capture After Each Micro-Increment**:
+- Every micro-increment attempted and result
+- Design decisions made during implementation
+- Issues encountered and solutions found
+- Testing approaches and results
+- Integration insights discovered
+- Performance observations
+- Educational insights gained
+
+### **Session Log Format Pattern**:
+```markdown
+## Micro-Increment [N]: [Description]
+**Date**: [timestamp]
+**Goal**: [specific objective]
+**Implementation**: [what was built]
+**Testing**: [validation performed]
+**Issues**: [problems encountered]
+**Solutions**: [how resolved]
+**Integration Notes**: [connection points for future components]
+**Educational Value**: [concepts demonstrated]
+**Next**: [what comes next]
+```
+
+### **Critical Notes**
+- **Never skip** session logging - architect needs this for methodology evolution
+- **Start immediately** with file existence check documentation
+- **Update after every micro-increment** - no matter how small
+- **Include code snippets** and testing results in the log

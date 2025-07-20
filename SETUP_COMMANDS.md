@@ -84,8 +84,3 @@ sudo apt-get install python3-pyqt6
 # Fix permissions (macOS/Linux)
 chmod +x .venv/bin/activate
 ```
-
-## Next Steps
-1. Verify all imports work
-2. Review documentation in `docs/Phase1/`
-3. Begin Component 1 development
