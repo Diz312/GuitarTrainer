@@ -1,0 +1,66 @@
+# GuitarTrainer Project Configuration - Hierarchical Structure
+# Project-level settings organized by component and scope
+
+# Video Input Component Configuration
+video:
+  core:
+    supported_formats: ['.mp4', '.avi', '.mov', '.mkv']
+    max_resolution: [1920, 1080]
+    target_fps: 30
+  processing:
+    resize_dimensions: [640, 480]
+    quality_threshold: 0.8
+
+# Pose Detection Component Configuration  
+pose_detection:
+  core:
+    model_complexity: 1
+    min_detection_confidence: 0.7
+    min_tracking_confidence: 0.5
+  performance:
+    batch_size: 32
+    max_processing_time_seconds: 30
+
+# GUI Component Configuration
+gui:
+  core:
+    window:
+      width: 1200
+      height: 800
+      theme: "dark"
+  behavior:
+    auto_save_interval_minutes: 5
+    max_undo_levels: 20
+
+# Analysis Component Configuration
+analysis:
+  biomechanical_thresholds:
+    shoulder_alignment:
+      good_range: [-5, 5]
+    right_wrist:
+      good_range: [10, 20]
+  performance:
+    analysis_timeout_seconds: 60
+
+# Machine Learning Configuration
+machine_learning:
+  core:
+    test_size: 0.2
+    random_state: 42
+  training:
+    min_training_samples: 50
+    retraining_trigger_count: 50
+    validation_split: 0.15
+
+# Application Configuration
+application:
+  core:
+    name: "GuitarTrainer"
+    version: "1.0.0"
+    debug_mode: true
+  directories:
+    data: "data"
+    models: "data/models"
+    training_videos: "data/training_videos"
+    temp: "temp"
+    logs: "logs"

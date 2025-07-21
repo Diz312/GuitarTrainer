@@ -9,8 +9,9 @@ using OpenCV and proper error handling patterns for computer vision applications
 """
 
 # Import functions as they're implemented
-from .video_utils import check_file_exists
+from .video_utils import check_file_exists, get_supported_video_formats
 
 __all__ = [
     'check_file_exists',
+    'get_supported_video_formats',
 ]
