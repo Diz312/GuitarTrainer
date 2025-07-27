@@ -201,6 +201,23 @@ E:\Python\GitHub\GuitarTrainer\
 3. **Ask permission before changes** - NEVER update automatically
 4. **Update only relevant sections** - Don't change what doesn't need changing
 
+### **AUTHORIZATION REQUIREMENT** - 🔄 **CRITICAL PATTERN**
+**NEVER make file edits without explicit user approval**
+- ❌ Do NOT use filesystem:edit_file without permission
+- ❌ Do NOT update any project files automatically  
+- ✅ ALWAYS ask "Should I make this change?" or "May I update this file?"
+- ✅ Wait for explicit "yes", "proceed", or "approved" before editing
+- ✅ Show proposed changes and request approval first
+
+**Exception**: Only update developer_session_log.md when specifically requested with "update thinking" command
+
+### **Code Comment Placement** - 🔄 **CRITICAL PATTERN**
+**ALL comments including Educational Notes MUST be inside function bodies**
+- ❌ Never place Educational Notes outside functions
+- ❌ Never place explanatory comments between functions
+- ✅ All Educational Notes go inside the function docstring or body
+- ✅ All explanatory comments go inside the function they explain
+
 ### **Testing Methodology** - 🔄 **CORRECTED CRITICAL PATTERN**
 **WRONG Approach (Learned from mistakes):**
 - ❌ Mixed pytest functions inside module files
@@ -261,6 +278,59 @@ try:
 except ImportError:
     logger = logging.getLogger(__name__)
 ```
+
+### **Test Design and Validation** - 🔄 **CRITICAL PATTERN**
+**Test cases must align with function design and scope**
+- ✅ **Always verify test cases match actual function responsibility**
+- ✅ **Question test assumptions before writing** - what should this function actually do?
+- ✅ **Don't assume edge cases are failures** - validate against single responsibility principle
+- ✅ **When tests fail, first ask: "Should this actually fail?"**
+- ✅ **Distinguish between code bugs vs incorrect test expectations**
+- ✅ **Test failures might indicate wrong test design, not wrong code**
+
+### **Content Review Before Updates** - 🔄 **CRITICAL PATTERN**  
+**Always check existing content before making changes**
+- ✅ **Read existing file content first** to identify redundancies/conflicts
+- ✅ **Remove conflicting/outdated content** when adding new features
+- ✅ **Clean up while adding** - don't just append
+- ✅ **Avoid redundant information** in the same file
+- ✅ **Update only relevant sections** - don't change what doesn't need changing
+
+### **Function Scope Validation** - 🔄 **CORE PRINCIPLE**
+**Validate that function behavior matches stated purpose**
+- ✅ **Single responsibility principle** - test what the function claims to do
+- ✅ **Separate concerns** - don't test filesystem validation in format validation
+- ✅ **Function name should match function scope** (e.g., validate_video_format = extension validation only)
+- ✅ **When making design choices, explicitly state what function will/won't do**
+- ✅ **Align all related components** (tests, docs, implementation) with design decisions
+
+### **Testing and Coverage Methodology** - 🔄 **ESTABLISHED STANDARD**
+**Comprehensive testing infrastructure with portable configuration**
+- ✅ **`.coveragerc` configuration** - Excludes `__main__` sections for realistic targets
+- ✅ **`PYTEST_COMMANDS.md` documentation** - Complete workflow reference
+- ✅ **Portable across machines** - Version controlled configuration
+- ✅ **Git integration** - Proper exclusions for coverage files
+- ✅ **Development workflow** - Quick check → coverage analysis → deep investigation
+- ✅ **HTML reports** - Line-by-line coverage visualization
+- ✅ **Realistic targets** - 60-80% coverage for functional code only
+
+**Standard Testing Workflow**:
+```bash
+# Quick development check
+pytest tests/10_project_components/test_module.py -v
+
+# Coverage analysis
+pytest tests/10_project_components/test_module.py --cov=src/module --cov-report=term-missing
+
+# Deep investigation
+pytest tests/10_project_components/test_module.py --cov=src/module --cov-report=html
+```
+
+**Infrastructure Requirements for ALL Projects**:
+- `.coveragerc` with `__main__` exclusions
+- `PYTEST_COMMANDS.md` reference documentation
+- `.gitignore` updates for coverage files
+- Numbered test directory organization
 
 ### **Micro-Incremental Development Discipline** - 🔄 **CORE METHODOLOGY**
 **Always:**

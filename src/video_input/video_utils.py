@@ -22,8 +22,15 @@ except ImportError:
     # Fallback for testing or standalone usage
     get_project_config = None
 
-# Set up module logger
-logger = logging.getLogger(__name__)
+# Import logger factory
+try:
+    # Add src directory to path for imports
+    sys.path.insert(0, str(Path(__file__).parent.parent.parent / 'src'))
+    from utils.logger_factory import get_component_logger
+    logger = get_component_logger('video_input')
+except ImportError as e:
+    # Fallback for testing or standalone usage
+    logger = logging.getLogger(__name__)
 
 
 def check_file_exists(file_path: Path) -> bool:
@@ -95,12 +102,67 @@ def check_file_exists(file_path: Path) -> bool:
         logger.error(f"Unexpected error checking file {file_path}: {e}")
         return False
 
-
-# Educational Note: This function focuses purely on file system validation.
-# It does NOT check if the file is a valid video - that's a separate concern
-# that will be handled by format validation and OpenCV loading functions.
-# This separation of concerns makes testing easier and code more maintainable.
-
+def validate_video_format(file_path: Path) -> bool:
+    """
+    Validate that a file has a supported video format extension.
+    
+    Educational Note: Format validation is the second validation step
+    in a computer vision pipeline, after file existence checking.
+    This function only checks the file extension - it does NOT validate
+    the actual file content or codec information.
+    
+    Computer Vision Context: Video processing applications need to
+    filter out unsupported formats early to prevent processing errors.
+    Different video formats have different characteristics:
+    - Container formats (.mp4, .avi, .mov, .mkv)
+    - Codec requirements (H.264, H.265, VP9)
+    - Metadata handling capabilities
+    
+    This function handles the first level - container format validation.
+    
+    Args:
+        file_path (Path): Path to video file to validate
+        
+    Returns:
+        bool: True if file extension is in supported formats, False otherwise
+        
+    Example:
+        >>> video_path = Path("guitar_lesson.mp4")
+        >>> if validate_video_format(video_path):
+        ...     print("Format is supported")
+        ... else:
+        ...     print("Unsupported video format")
+    """
+    # Educational Note: We validate format regardless of file existence
+    # because this function has a single responsibility - format checking
+    # File existence should be checked separately using check_file_exists()
+    
+    try:
+        # Get file extension (convert to lowercase for case-insensitive comparison)
+        file_extension = file_path.suffix.lower()
+        
+        # Handle edge case of no extension
+        if not file_extension:
+            logger.warning(f"File has no extension: {file_path}")
+            return False
+        
+        # Get supported formats from configuration
+        supported_formats = get_supported_video_formats()
+        
+        # Check if extension is in supported list
+        is_supported = file_extension in supported_formats
+        
+        if is_supported:
+            logger.debug(f"Video format validation passed: {file_path} ({file_extension})")
+        else:
+            logger.warning(f"Unsupported video format: {file_path} ({file_extension}). Supported: {supported_formats}")
+            
+        return is_supported
+        
+    except Exception as e:
+        # Handle any unexpected errors gracefully
+        logger.error(f"Error validating video format for {file_path}: {e}")
+        return False
 
 def get_supported_video_formats() -> List[str]:
     """
@@ -188,6 +250,44 @@ if __name__ == "__main__":
             except Exception as e:
                 print(f"   ⚠️ Exception: {e}")
     
+    def demonstrate_format_validation():
+        """
+        Demonstrate video format validation with various file types.
+        
+        Educational Note: Shows how format validation works with different
+        file extensions, including edge cases and unsupported formats.
+        """
+        print("\n🎬 DEMONSTRATING VIDEO FORMAT VALIDATION:")
+        print("-" * 50)
+        
+        # Test cases with different file extensions
+        test_cases = [
+            ("Valid MP4 video", Path("guitar_lesson.mp4")),
+            ("Valid AVI video", Path("practice_session.avi")),
+            ("Valid MOV video", Path("performance.MOV")),  # Test case sensitivity
+            ("Invalid text file", Path("readme.txt")),
+            ("Invalid image file", Path("photo.jpg")),
+            ("No extension", Path("videofile")),
+            ("Empty extension", Path("video.")),
+            ("Multiple extensions", Path("backup.mp4.old")),
+        ]
+        
+        supported_formats = get_supported_video_formats()
+        print(f"\n📋 Supported formats: {supported_formats}")
+        
+        for description, test_path in test_cases:
+            print(f"\n📹 Testing: {description}")
+            print(f"   File: {test_path}")
+            print(f"   Extension: '{test_path.suffix.lower()}'")
+            
+            try:
+                result = validate_video_format(test_path)
+                status = "✅ SUPPORTED" if result else "❌ NOT SUPPORTED"
+                print(f"   Result: {status}")
+                
+            except Exception as e:
+                print(f"   ⚠️ Exception: {e}")
+
     def demonstrate_config_integration():
         """
         Demonstrate configuration system integration.
@@ -222,13 +322,13 @@ if __name__ == "__main__":
         """
         Show how the utility functions work together.
         
-        Educational Note: Demonstrates the workflow of file validation
-        followed by format checking in a typical video processing pipeline.
+        Educational Note: Demonstrates the complete validation workflow
+        combining file existence checking and format validation.
         """
-        print("\n🔄 DEMONSTRATING FUNCTION INTEGRATION:")
+        print("\n🔄 DEMONSTRATING COMPLETE VALIDATION WORKFLOW:")
         print("-" * 50)
         
-        # Simulate a video processing workflow
+        # Simulate a complete video processing validation workflow
         test_files = [
             Path("sample_video.mp4"),
             Path("guitar_lesson.avi"),
@@ -236,50 +336,55 @@ if __name__ == "__main__":
             Path(__file__)  # This Python file
         ]
         
-        supported_formats = get_supported_video_formats()
-        
         for test_file in test_files:
             print(f"\n📹 Processing: {test_file.name}")
             
             # Step 1: Check if file exists
             exists = check_file_exists(test_file)
-            print(f"   File exists: {exists}")
+            print(f"   1. File exists: {'✅ Yes' if exists else '❌ No'}")
             
-            if exists:
-                # Step 2: Check if format is supported
-                file_ext = test_file.suffix.lower()
-                format_supported = file_ext in supported_formats
-                print(f"   Format ({file_ext}): {'✅ Supported' if format_supported else '❌ Not supported'}")
-                
-                # Step 3: Overall validation
-                valid_for_processing = exists and format_supported
-                print(f"   Ready for processing: {'✅ Yes' if valid_for_processing else '❌ No'}")
-            else:
-                print(f"   ⚠️ Cannot process - file not accessible")
+            # Step 2: Check if format is supported (regardless of existence)
+            format_valid = validate_video_format(test_file)
+            print(f"   2. Format supported: {'✅ Yes' if format_valid else '❌ No'}")
+            
+            # Step 3: Overall validation for video processing
+            ready_for_processing = exists and format_valid
+            print(f"   3. Ready for processing: {'✅ Yes' if ready_for_processing else '❌ No'}")
+            
+            # Show reasoning
+            if not exists:
+                print(f"      → Cannot process: File not accessible")
+            elif not format_valid:
+                print(f"      → Cannot process: Unsupported format ({test_file.suffix})")
+            elif ready_for_processing:
+                print(f"      → Ready for video processing pipeline")
     
     print("🎸 GUITARTAINER VIDEO INPUT UTILITIES TEST 🎸")
     print("=" * 60)
     
     try:
-        # Set up basic logging for demonstration
-        import logging
-        logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
-        
         print("\n🔧 TESTING VIDEO INPUT UTILITY FUNCTIONS:")
+        
+        # Test logger integration first
+        print(f"\n📋 Logger status: {logger.name if hasattr(logger, 'name') else 'basic logger'}")
+        logger.info("Starting video_utils demonstration")
         
         # Demonstrate each function
         demonstrate_file_existence_checking()
+        demonstrate_format_validation()
         demonstrate_config_integration()
         show_function_integration()
         
         print("\n🎯 VIDEO INPUT UTILITIES VALIDATION:")
         validation_points = [
             "File existence checking working with various scenarios",
+            "Video format validation working with supported/unsupported extensions",
+            "Case-insensitive format validation implemented",
             "Configuration integration successful (formats loaded)",
             "Error handling graceful for invalid inputs",
-            "Function integration demonstrates typical workflow",
+            "Complete validation workflow demonstrates real-world usage",
             "Dynamic testing without hardcoded values",
-            "Educational demonstrations show real-world usage"
+            "Educational demonstrations show CV pipeline concepts"
         ]
         
         for point in validation_points:
