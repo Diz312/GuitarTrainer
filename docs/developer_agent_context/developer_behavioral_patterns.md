@@ -20,6 +20,131 @@
 
 ---
 
+## 🧪 **REAL FILE vs MOCK TESTING PRINCIPLES**
+
+### **Testing Hierarchy - MANDATORY**
+**Prioritize real files over mocks whenever possible**
+
+**Testing Strategy:**
+1. **Real files FIRST** - Use actual test files for success scenarios
+2. **Strategic mocks ONLY** - For error conditions that can't be tested with real files
+3. **No redundant coverage** - Don't test the same thing with both mocks and real files
+
+### **When to Use Real Files vs Mocks**
+
+**✅ Use Real Files For:**
+- Success scenarios and normal workflows
+- Integration testing with actual OpenCV operations
+- Property validation with real video/file data
+- Complete end-to-end functionality testing
+- Resource management and cleanup verification
+
+**✅ Use Strategic Mocks For:**
+- OpenCV creation failures (`VideoCapture.isOpened() = False`)
+- Invalid video properties (zero fps, frame count, resolution)
+- OpenCV exceptions (`cv2.error`)
+- System-level errors that can't be simulated with real files
+
+**❌ Never Mock:**
+- File existence checking (use real temp files)
+- Format validation (use real file extensions)
+- Successful video loading (use real test videos)
+- Normal video property extraction
+
+### **Test Fixture System Standards**
+
+**Flexible Fixture Pattern:**
+```python
+@pytest.fixture
+def test_video_files():
+    """Provide real test video files with easy extensibility."""
+    fixtures_dir = Path(__file__).parent.parent / "fixtures"
+    
+    available_files = {
+        'valid_video': fixtures_dir / "test_video.mp4",
+        # Future files easily added:
+        # 'high_res_video': fixtures_dir / "high_res_test.mp4",
+        # 'different_format': fixtures_dir / "test_video.avi",
+    }
+    
+    # Verify files exist and skip if missing
+    existing_files = {}
+    for name, path in available_files.items():
+        if path.exists():
+            existing_files[name] = path
+        else:
+            pytest.skip(f"Test video file not found: {path}")
+    
+    return existing_files
+```
+
+### **Test Cleanup and Consolidation Principles**
+
+**Focus on Core Functionality:**
+- ✅ **Single comprehensive test class** covering all functionality
+- ✅ **Real file tests for main workflows**
+- ✅ **Strategic mocks grouped at end for error conditions**
+- ❌ **No redundant test classes** (avoid TestEdgeCases, TestIntegration, etc.)
+- ❌ **No duplicate test coverage** between mocks and real files
+
+**Test Organization:**
+```python
+class TestVideoLoader:
+    """Single focused class testing all VideoLoader functionality."""
+    
+    # Real file tests first (primary functionality)
+    def test_load_real_video_success(self, test_video_files): pass
+    def test_multiple_video_loading(self, test_video_files): pass
+    def test_complete_workflow(self, test_video_files): pass
+    
+    # Strategic mocks last (error conditions only)
+    @patch('cv2.VideoCapture')
+    def test_opencv_creation_fails(self, mock_videocapture): pass
+```
+
+### **Mock Cleanup Guidelines**
+
+**Remove Redundant Mocks:**
+- ❌ Mock successful video loading (use real files instead)
+- ❌ Mock normal property extraction (use real files instead)
+- ❌ Mock resource cleanup with fake videos (use real files instead)
+- ❌ Multiple test classes testing same functionality
+
+**Keep Essential Mocks:**
+- ✅ OpenCV creation failures
+- ✅ Invalid video properties
+- ✅ OpenCV exceptions
+- ✅ System-level errors
+
+---
+
+## 📁 **TEST FIXTURE MANAGEMENT**
+
+### **Real File Fixture Standards**
+
+**Fixture Location:**
+- `tests/fixtures/` - Dedicated directory for test files
+- Version controlled test files (small videos only)
+- Cross-platform compatible formats (MP4 recommended)
+
+**Future Extensibility:**
+- Easy to add new test video files
+- Fixture automatically discovers available files
+- Tests skip gracefully if files missing
+- No hardcoded file dependencies
+
+**Usage in `__main__` Sections:**
+```python
+if __name__ == "__main__":
+    def test_with_real_video_if_available():
+        # Check for test video and use if available
+        test_video_path = Path(__file__).parent.parent / "fixtures" / "test_video.mp4"
+        if test_video_path.exists():
+            # Test with real file
+        else:
+            # Graceful skip with helpful message
+```
+
 ## 🧪 **TESTING METHODOLOGY STANDARDS**
 
 ### **Dual Testing Pattern - MANDATORY**
@@ -106,7 +231,27 @@ print(f"GUI width: {config.gui.core.window.width}")
 
 ---
 
-## 🏗️ **INFRASTRUCTURE INTEGRATION PATTERNS**
+## 🔧 **INFRASTRUCTURE INTEGRATION PATTERNS**
+
+### **Standard Import Pattern (MANDATORY)**
+**ALL modules must use this exact pattern:**
+```python
+# Add project root to Python path for proper imports
+project_root = Path(__file__).parent.parent.parent
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
+
+# All imports use absolute paths from project root
+from config.config_manager import get_project_config
+from src.utils.logger_factory import get_component_logger
+from src.video_input.video_utils import check_file_exists
+```
+
+**Critical Rules:**
+- ✅ ALWAYS add project_root to sys.path
+- ✅ ALWAYS use absolute imports from project root
+- ❌ NEVER use relative imports (from .module)
+- ❌ NEVER use path manipulations beyond project_root
 
 ### **Configuration Usage Standard**
 ```python

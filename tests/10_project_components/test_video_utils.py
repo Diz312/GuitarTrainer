@@ -12,9 +12,12 @@ import pytest
 import sys
 from pathlib import Path
 
-# Add src directory to path for imports
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / 'src'))
-from video_input.video_utils import check_file_exists, validate_video_format, get_supported_video_formats
+# Add project root to Python path for proper imports
+project_root = Path(__file__).parent.parent.parent
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
+
+from src.video_input.video_utils import check_file_exists, validate_video_format, get_supported_video_formats
 
 
 @pytest.fixture

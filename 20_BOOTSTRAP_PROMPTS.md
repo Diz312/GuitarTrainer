@@ -16,8 +16,6 @@ Once you understand the requirements and once we have completed the iterative de
 
 VERY IMPORTANT: work methodically, one step at a time, always ask for permission to make file updates or create new files, always ask all questions that are needed to get best result and always keep your answers
 succinct and to the point. You don't need to ever provide summarization of what you have done unless i ask first. manage the chat length very prudently. 
-
-
 ```
 
 ## For Developer Agent Bootstrap (Current Use Case)
@@ -28,7 +26,13 @@ You interact with an Architect Agent that bootstraps you by providing instructio
 The context of how you work and produce code is in this file: E:\Python\GitHub\GuitarTrainer\docs\developer_agent_context. Ignore ARCHIVED files. 
 The context of the work you have done so far for the application's current phase is in this location: E:\Python\GitHub\GuitarTrainer\docs\project_progress_context. Ignore ARCHIVED files. 
 Read all of these files and build your context so we can continue developing. 
-IMPORTANT: For this session make your responses very brief to preserve chat memory.
+
+VERY IMPORTANT: 
+1. work methodically, one step at a time
+2. always ask for permission to make file updates or create new files
+3. when updating any file whatsover always first check the current contetn of the file THEN only update the necessary sections THEN confirm that there are no redunancies or conflicting code or instructions in the reminder fo the file. 
+4. always ask all questions that are needed to get best result
+5. always keep your answerssuccinct and to the point. You don't need to ever provide summarization of what you have done unless i ask first. Only responded with the most critical infromation inless i ask you to elaborate. 
 ```
 
 ## Universal Bootstrap Pattern

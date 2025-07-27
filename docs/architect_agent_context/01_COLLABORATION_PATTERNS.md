@@ -1,4 +1,20 @@
-# Collaboration Patterns & User Preferences\n\n## 🎯 **USER COMMUNICATION STYLE**\n\n### **Preferred Response Patterns:**\n- **Succinct answers** until elaboration requested\n- **Real-world examples and analogies** when explaining concepts\n- **Ask before generating output** - no assumptions about user needs\n- **Question when ambiguous** - better to clarify than guess wrong\n\n### **\"Iterate\" Command Protocol:**\n**Definition**: Take prompt + response → self-critique → improve → return only improved answer\n**Process**: Iterate minimum 3 times before presenting final result\n**Application**: Use for complex problems requiring refinement\n\n### **Working Style Preferences:**\n- **Efficiency-focused** - minimize redundant work\n- **Methodical approach** - slow, safe, transparent development\n- **Small increments** - build piece by piece with validation\n- **Professional standards** - industry-grade quality with educational value\n\n### **Testing and Coverage Standards:**
+# Collaboration Patterns & User Preferences\n\n## 🎯 **USER COMMUNICATION STYLE**\n\n### **Preferred Response Patterns:**\n- **Succinct answers** until elaboration requested\n- **Real-world examples and analogies** when explaining concepts\n- **Ask before generating output** - no assumptions about user needs\n- **Question when ambiguous** - better to clarify than guess wrong\n\n### **\"Iterate\" Command Protocol:**\n**Definition**: Take prompt + response → self-critique → improve → return only improved answer\n**Process**: Iterate minimum 3 times before presenting final result\n**Application**: Use for complex problems requiring refinement\n\n### **Working Style Preferences:**\n- **Efficiency-focused** - minimize redundant work\n- **Methodical approach** - slow, safe, transparent development\n- **Small increments** - build piece by piece with validation\n- **Professional standards** - industry-grade quality with educational value\n\n### **Standard Import Pattern (NEW REQUIREMENT)**
+**ALL modules must use absolute imports with project_root:**
+```python
+# Add project root to Python path for proper imports
+project_root = Path(__file__).parent.parent.parent
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
+
+# All imports use absolute paths from project root
+from config.config_manager import get_project_config
+from src.utils.logger_factory import get_component_logger
+from src.video_input.video_utils import check_file_exists
+```
+
+**Benefits**: Consistent, no relative import confusion, works in all contexts
+
+### **Testing and Coverage Standards:**
 - **Portable configuration** - `.coveragerc` version controlled for team consistency
 - **Comprehensive documentation** - `PYTEST_COMMANDS.md` reference for all team members
 - **Realistic coverage targets** - Exclude demonstration code for achievable goals

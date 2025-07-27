@@ -12,11 +12,15 @@ Author: GuitarTrainer Development
 from pathlib import Path
 from typing import Optional, List
 import logging
+import sys
+
+# Add project root to Python path for proper imports
+project_root = Path(__file__).parent.parent.parent
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
 
 # Import project configuration
 try:
-    import sys
-    sys.path.append(str(Path(__file__).parent.parent.parent))
     from config import get_project_config
 except ImportError:
     # Fallback for testing or standalone usage
@@ -24,9 +28,7 @@ except ImportError:
 
 # Import logger factory
 try:
-    # Add src directory to path for imports
-    sys.path.insert(0, str(Path(__file__).parent.parent.parent / 'src'))
-    from utils.logger_factory import get_component_logger
+    from src.utils.logger_factory import get_component_logger
     logger = get_component_logger('video_input')
 except ImportError as e:
     # Fallback for testing or standalone usage
