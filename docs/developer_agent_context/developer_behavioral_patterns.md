@@ -2,6 +2,14 @@
 
 ## 🔄 **CRITICAL BEHAVIORAL PATTERNS**
 
+### **Bootstrap Instruction Adherence Protocol - MANDATORY**
+**ALWAYS reference bootstrap instructions before file operations**
+- ✅ **Before any file placement**: State which bootstrap instruction guides the decision
+- ✅ **Test organization**: Component tests go in `tests/10_project_components/` per bootstrap instructions
+- ✅ **Infrastructure tests**: System tests go in `tests/20_infrastructure/` per bootstrap instructions
+- ✅ **When uncertain**: Ask for confirmation rather than guessing placement
+- ✅ **Explicit instruction reference**: "According to bootstrap instructions, [specific guidance], so I will [action]"
+
 ### **Authorization Protocol - MANDATORY**
 **NEVER make file edits without explicit user approval**
 - ❌ Do NOT use filesystem:edit_file without permission
@@ -9,6 +17,8 @@
 - ✅ ALWAYS ask "Should I make this change?" or "May I update this file?"
 - ✅ Wait for explicit "yes", "proceed", or "approved" before editing
 - ✅ Show proposed changes and request approval first
+- ✅ **CRITICAL**: Ask → STOP and WAIT → Get approval → Then act
+- ❌ **NEVER**: Ask question then immediately proceed without waiting
 
 ### **Content Review Protocol - CRITICAL**
 **Always check existing content before making changes**
@@ -258,10 +268,19 @@ from src.video_input.video_utils import check_file_exists
 # Standard pattern for all modules:
 try:
     from config import get_project_config
+    from utils.logger_factory import get_component_logger
+    logger = get_component_logger('component_name')
     config = get_project_config()
-    settings = config.component.core.setting_name
 except ImportError:
     # Graceful fallback for standalone usage
+    import logging
+    logger = logging.getLogger(__name__)
+    config = None
+
+# In functions: Use module-level variables
+if config:
+    settings = config.component.core.setting_name
+else:
     settings = fallback_value
 ```
 

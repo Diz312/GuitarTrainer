@@ -26,7 +26,7 @@ pytest tests/10_project_components/test_video_utils.py --cov=src/video_input --c
 pytest tests/10_project_components/test_video_utils.py --cov=src/video_input --cov-report=html
 
 # Combined terminal + HTML reports
-pytest tests\10_project_components\test_video_loader.py --cov=src/video_input --cov-report=term-missing --cov-report=html
+pytest E:\Python\GitHub\GuitarTrainer\tests\10_project_components\test_mediapipe_detector.py --cov=src/video_input --cov-report=term-missing --cov-report=html
 ```
 
 ---

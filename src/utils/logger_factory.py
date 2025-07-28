@@ -235,6 +235,9 @@ class LoggerFactory:
         # Prevent duplicate logs from parent loggers
         logger.propagate = False
         
+        # Clear any existing handlers to prevent duplicates
+        logger.handlers.clear()
+        
         # Get component-specific log level
         component_level = self.config['component_levels'].get(
             component_name, 

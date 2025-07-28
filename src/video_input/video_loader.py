@@ -13,6 +13,7 @@ Educational Focus:
 
 import cv2
 import logging
+import numpy as np
 import sys
 from pathlib import Path
 from typing import Optional, Dict, Any
@@ -263,6 +264,51 @@ class VideoLoader:
                  Empty dict if no video is loaded
         """
         return self.video_info.copy()  # Return copy to prevent external modification
+    
+    def get_next_frame(self) -> Optional[np.ndarray]:
+        """
+        Get the next frame from the currently loaded video.
+        
+        Educational Note: This method demonstrates frame-by-frame video processing,
+        which is the foundation of computer vision pipelines. Each frame is a
+        numpy array representing image data that can be processed for analysis.
+        
+        Computer Vision Context: Video processing typically involves reading frames
+        sequentially, processing each frame independently, then combining results
+        for temporal analysis of motion patterns.
+        
+        Guitar Analysis Application: Frame-by-frame processing enables pose
+        detection on each video frame to analyze guitar playing technique over time.
+        
+        Returns:
+            numpy.ndarray: Single video frame as BGR image, or None if no frame available
+            
+        Raises:
+            No exceptions raised - returns None for any errors
+        """
+        if not self.is_video_loaded():
+            self.logger.warning("Attempted to get frame but no video is loaded")
+            return None
+            
+        try:
+            # Educational Note: cv2.VideoCapture.read() returns (success, frame)
+            # success is boolean indicating if frame was read successfully
+            # frame is the actual image data as numpy array
+            success, frame = self.current_video.read()
+            
+            if success:
+                self.logger.debug(f"Frame extracted successfully: shape={frame.shape}")
+                return frame
+            else:
+                self.logger.debug("No more frames available (end of video reached)")
+                return None
+                
+        except cv2.error as e:
+            self.logger.error(f"OpenCV error reading frame: {e}")
+            return None
+        except Exception as e:
+            self.logger.error(f"Unexpected error reading frame: {e}")
+            return None
     
     def close_video(self) -> None:
         """

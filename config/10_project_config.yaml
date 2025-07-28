@@ -15,8 +15,9 @@ video:
 pose_detection:
   core:
     model_complexity: 1
-    min_detection_confidence: 0.7
+    min_detection_confidence: 0.6
     min_tracking_confidence: 0.5
+    static_image_mode: false  # false=video mode (tracking), true=image mode (independent frames)
   performance:
     batch_size: 32
     max_processing_time_seconds: 30
